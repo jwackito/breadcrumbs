@@ -1,4 +1,5 @@
 # Breadcrumbs
+These are a list of things it took me a while to learn. Leaving them here for the future.
 
-## Article list
-- [Article](../blog/article.md)
+## Python Pandas Efficient Recipes
+- [Select Rows Matching a Simple Pattern](../bc/efficient_selection_simple_pattern.md)
