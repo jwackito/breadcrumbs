@@ -1,0 +1,4 @@
+# Select Rows Matching a Simple Pattern
+Sometimes I need to select the rows given that the value of a column matches a certain pattern. For example, if my DataFrame contains IP addresses of source and destination of data packets being transferred, I may be interested in all the packets sent by a certain host. If your dataset contains information about the collisions of particles in a particle accelerator,  you may be interested in getting all the particles of a certain type or above or below a certain mass. 
+
+The usual way to do a selection is to create a mask indexer that match the criteria, that is, an array of Bool the same length of the DataFrame, that contains True in the position of the rows we want in the result and False in the positions of the rows we want filtered out of the results. It is possible to use the indexer directly inside brackets, similar to the standard array notation in python, or using the .loc[] property of the DataFrame.
