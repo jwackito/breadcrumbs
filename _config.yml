@@ -1,6 +1,7 @@
 remote_theme: jekyll/minima
 minima:
   skin: auto
+  google_analytics: G-6038WRL4Q6
 author:
   name: Joaquin Bogado
   email: "joaquinbogado@duck.com"
