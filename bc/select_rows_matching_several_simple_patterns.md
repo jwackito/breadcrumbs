@@ -41,7 +41,11 @@ In [4]: def f2():
    ...:     AllCrit = Crit1 | Crit2 & Crit3
    ...:     df[AllCrit]
    ...:  
+```
+In the line `In [2]` the line_profiler extension is loaded. In lines `In [3]` and `In [4]` the functions `f1()` and `f2()` are defined. Both functions do the same but while function `f1()` uses DataFrames as indexes, the function `f2()` uses NumPy arrays. Finally in the line `In [5]`, the line profiler magic is called. The `-f` argument indicates which are the functions we want to profile. In this case, we want to profile both, `f1` and `f2`. Then we are invoking both functions inside an explicit list comprehension, that will execute both functions 1000 times each. 
 
+The output of the magic command includes very detailed information of the run of each function.  First the line `Timer unit: 1e-06 s` indicates the resolution of the rest of the numbers, in this case, microseconds (μs). The rest of the information is per function. The `f1()` function took 1.32 seconds of the total run time, while the `f2()` took 0.55 seconds. The most important differences are between the lines 2, 3, and 5 of each function, where each criteria is calculated, and between line 6 of each function, where the criteria are consolidated together.  I did separate the creation of the datetime on purpose to show how much time it takes in the total run time, and to separate it from the comparison in both cases. Clearly, an improvement in both cases can be to declare the d variable outside the function definition, saving around 175 ms in the total time of each function. 
+```
 In [5]: %lprun -f f1 -f f2 [(f1(), f2()) for i in range(1000)]
 Timer unit: 1e-06 s
 
@@ -49,7 +53,7 @@ Total time: 1.32061 s
 File: <ipython-input-215-f15297257859>
 Function: f1 at line 1
 
-Line\#      Hits         Time  Per Hit   % Time  Line Contents
+Line #      Hits         Time  Per Hit   % Time  Line Contents
 ==============================================================
     1                                           def f1():
     2      1000     187151.0    187.2     14.2      Crit1 = df.AAA == 'b'
@@ -59,12 +63,11 @@ Line\#      Hits         Time  Per Hit   % Time  Line Contents
     6      1000     259318.0    259.3     19.6      AllCrit = Crit1 | Crit2 & Crit3
     7      1000     339473.0    339.5     25.7      df[AllCrit]
 
-
 Total time: 0.554853 s
 File: <ipython-input-216-031ea8e9fba2>
 Function: f2 at line 1
 
-Line\#      Hits         Time  Per Hit   % Time  Line Contents
+Line #      Hits         Time  Per Hit   % Time  Line Contents
 ==============================================================
     1                                           def f2():
     2      1000      31025.0     31.0      5.6      Crit1 = df.AAA.values == 'b'
@@ -74,10 +77,6 @@ Line\#      Hits         Time  Per Hit   % Time  Line Contents
     6      1000       3823.0      3.8      0.7      AllCrit = Crit1 | Crit2 & Crit3
     7      1000     294098.0    294.1     53.0      df[AllCrit]
 ```
-In the line `In [2]` the line_profiler extension is loaded. In lines `In [3]` and `In [4]` the functions `f1()` and `f2()` are defined. Both functions do the same but while function `f1()` uses DataFrames as indexes, the function `f2()` uses NumPy arrays. Finally in the line `In [5]`, the line profiler magic is called. The `-f` argument indicates which are the functions we want to profile. In this case, we want to profile both, `f1` and `f2`. Then we are invoking both functions inside an explicit list comprehension, that will execute both functions 1000 times each. 
-
-The output of the magic command includes very detailed information of the run of each function.  First the line `Timer unit: 1e-06 s` indicates the resolution of the rest of the numbers, in this case, microseconds (μs). The rest of the information is per function. The `f1()` function took 1.32 seconds of the total run time, while the `f2()` took 0.55 seconds. The most important differences are between the lines 2, 3, and 5 of each function, where each criteria is calculated, and between line 6 of each function, where the criteria are consolidated together.  I did separate the creation of the datetime on purpose to show how much time it takes in the total run time, and to separate it from the comparison in both cases. Clearly, an improvement in both cases can be to declare the d variable outside the function definition, saving around 175 ms in the total time of each function. 
-
 The most interesting improvement occurs when the `AllCrit` variable is calculated, in line 6 of each function. In `f1`, operating over DataFrames, each execution takes more than 259 μs, while in `f2`, operating over NumPy arrays, it takes less than 4 μs. That is more than an order of magnitude improvement, and of course, the more code like this is executed, the bigger the impact in the final run time. 
 
 Even when it is possible to do a more in depth analysis, for example to determine if the execution time grows logarithmically, linearly or exponentially with respect to the size of the input, I think it is clear that working with NumPy arrays whenever is possible, will reduce the execution time, especially in large DataFrames.
