@@ -10,7 +10,8 @@ In [2]: def f1():
    ...:    ... your function here...
 In [3]: def f2():
    ...:    ... your other funciton here ...
-In [4]: %lprun -f f1 -f f2 [(f1(), f2()) for i in range(1000)]  # run the functions in a closed loop 1000 times.
+In [4]: %lprun -f f1 -f f2 [(f1(), f2()) for i in range(1000)]
+# run the functions in a closed loop 1000 times.
 ```
 #### In depth
 Same principle as in [Select Rows Matching a Simple Pattern](efficient_selection_simple_pattern.md) applies when more than one criteria is used over one or several columns. If the DataFrame is a Zeek Log, I may be interested to get all the rows going from a particular client to a particular server, that is, the `df[df["id.orig_h"] == "some IP") & (df["id.resp_h"] == "some other IP")]`. If your dataset contains particle physics information, you may be interested in collisions with energies between two values, let's say the `collisions[(collisions.energy >= 10) & (collisions.energy <= 100)]`. If your dataset contains clients, you may be interested in getting the information of all the clients whose names match with either Gabriela or Joaquin that have spent more than 10000 in your store. That is, the `clients[((clients.name == "Gabriela") | (clients.name == "Joaquin")) & (clients.total_spent >= 10000)]`.
