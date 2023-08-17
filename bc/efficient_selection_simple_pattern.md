@@ -1,4 +1,4 @@
-# Select Rows Matching a Simple Pattern
+# Pandas - Select Rows Matching a Simple Pattern
 
 #### TL;DR
 ```python
