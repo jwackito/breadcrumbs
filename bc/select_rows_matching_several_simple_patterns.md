@@ -1,5 +1,10 @@
 # Pandas - Select Rows Matching Several Simple Patterns
 
+#### TL;DR
+- Operations over DataFrames are, usually, more expensive than operations over NumPy arrays. Try always to use the second, specially when creating criteria to index rows in  DataFrames.
+- Some operations, like creating a datetime using Pandas, may seem harmless but they take a lot of time to execute. If the code is inside a loop, the impact on the total time can be huge. When coding, think if you can write the relatively expensive code outside the loop.
+- Use `line_profiler` or even `%timeit` (or `%%timeit` for multi-line) to test the runtime of your code.
+#### In depth
 Same principle as in [Select Rows Matching a Simple Pattern](efficient_selection_simple_pattern.md) applies when more than one criteria is used over one or several columns. If the DataFrame is a Zeek Log, I may be interested to get all the rows going from a particular client to a particular server, that is, the `df[df["id.orig_h"] == "some IP") & (df["id.resp_h"] == "some other IP")]`. If your dataset contains particle physics information, you may be interested in collisions with energies between two values, let's say the `collisions[(collisions.energy >= 10) & (collisions.energy <= 100)]`. If your dataset contains clients, you may be interested in getting the information of all the clients whose names match with either Gabriela or Joaquin that have spent more than 10000 in your store. That is, the `clients[((clients.name == "Gabriela") | (clients.name == "Joaquin")) & (clients.total_spent >= 10000)]`.
 
 The examples of Pandas CookBook documentation shows solutions like the one in the figure below. Here I used several data types to show the impact this could have on the runtime of the solutions.
